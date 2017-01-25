@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2017. Behrouz Khezry
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.jadi.activity;
 
 import android.app.Activity;
@@ -7,6 +21,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +37,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.bkhezry.extrawebview.data.IntentServiceResult;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -47,6 +65,7 @@ import net.jadi.listener.EndlessRecyclerViewScrollListener;
 import net.jadi.pojo.PostBlog;
 import net.jadi.services.APIServices;
 import net.jadi.services.RetrofitUtility;
+import net.jadi.utility.Utility;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
     private LongSparseArray<PostBlog> postBlogSparseArray = new LongSparseArray<>();
     private LoadType loadType;
     private MenuItem searchItem;
+    private MaterialDialog errorConnectionDialog;
+    private MaterialDialog errorFilterDialog;
 
     public enum LoadType {
         ONLINE, DATABASE
@@ -91,22 +112,16 @@ public class MainActivity extends AppCompatActivity {
         @StyleRes int style = R.style.AppTheme;
         setTheme(style);
         setContentView(R.layout.activity_main);
+        dialogGenerator();
         EventBus.getDefault().register(this);
         loadType = LoadType.ONLINE;
         dataBaseHandler = new DataBaseHandler(MainActivity.this);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         typeface = Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf");
-        bmb = (BoomMenuButton) findViewById(R.id.bmb);
-        assert bmb != null;
-        bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
-        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_9_3);
-        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_9_3);
 
-        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
-            bmb.addBuilder(getTextInsideCircleButtonBuilder(imageResources[i], tags[i]));
-        }
-
+        boomMenuGenerator();
 
         IProfile profile = new ProfileDrawerItem()
                 .withName("کیبرد آزاد")
@@ -140,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("پست‌ها").withIcon(FontAwesome.Icon.faw_th_list).withIdentifier(1),
                         new PrimaryDrawerItem().withName("نشان شده‌ها").withIcon(FontAwesome.Icon.faw_bookmark).withIdentifier(1)
-                        //new PrimaryDrawerItem().withName("تنظیمات").withIcon(FontAwesome.Icon.faw_cog),
-                        //new PrimaryDrawerItem().withName("راهنما").withIcon(FontAwesome.Icon.faw_question),
-                        //new PrimaryDrawerItem().withName("درباره").withIcon(FontAwesome.Icon.faw_github)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -162,8 +174,47 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         smoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progressbar);
         initRecycleView();
+    }
 
+    private void boomMenuGenerator() {
+        bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        assert bmb != null;
+        bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_9_3);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_9_3);
 
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            bmb.addBuilder(getTextInsideCircleButtonBuilder(Utility.ImageResources[i], Utility.TAGS[i]));
+        }
+    }
+
+    private void dialogGenerator() {
+        errorConnectionDialog = new MaterialDialog.Builder(MainActivity.this)
+                .content(R.string.error_connect_label)
+                .contentGravity(GravityEnum.END)
+                .cancelable(false)
+                .autoDismiss(false)
+                .typeface("IRANSansMobile.ttf", "IRANSansMobile.ttf")
+                .positiveText(R.string.ok_label)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                }).build();
+        errorFilterDialog = new MaterialDialog.Builder(MainActivity.this)
+                .content(R.string.error_filter_label)
+                .contentGravity(GravityEnum.END)
+                .cancelable(false)
+                .autoDismiss(false)
+                .typeface("IRANSansMobile.ttf", "IRANSansMobile.ttf")
+                .positiveText(R.string.shit_label)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                }).build();
     }
 
     private void display(int position) {
@@ -192,16 +243,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bookmark(IntentServiceResult result) {
-        if (result.isChecked()) {
-            dataBaseHandler.insertPostBookmark(postBlogSparseArray.get(result.getId()));
-        } else {
-            dataBaseHandler.removePostBookmark(result.getId());
-            if (loadType == LoadType.DATABASE) {
-                int position = postBlogList.indexOf(postBlogSparseArray.get(result.getId()));
-                postBlogList.remove(position);
-                adapter.notifyItemRemoved(position);
+        if (postBlogSparseArray.get(result.getId()) != null)
+            if (result.isChecked()) {
+                dataBaseHandler.insertPostBookmark(postBlogSparseArray.get(result.getId()));
+            } else {
+                dataBaseHandler.removePostBookmark(result.getId());
+                if (loadType == LoadType.DATABASE) {
+                    int position = postBlogList.indexOf(postBlogSparseArray.get(result.getId()));
+                    postBlogList.remove(position);
+                    adapter.notifyItemRemoved(position);
+                }
             }
-        }
     }
 
     private void initRecycleView() {
@@ -218,43 +270,47 @@ public class MainActivity extends AppCompatActivity {
             scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                    preparePostBlog(++pageGlobal);
+                    preparePostBlogServer(++pageGlobal);
                 }
             };
             recyclerView.addOnScrollListener(scrollListener);
-            preparePostBlog(++pageGlobal);
+            preparePostBlogServer(++pageGlobal);
         } else {
             preparePostBlogDB();
         }
     }
 
     private void preparePostBlogDB() {
-        addDataToView(dataBaseHandler.getPostBookmarks());
+        addDataToView(dataBaseHandler.getPostBookmarks(), LoadType.DATABASE);
     }
 
-    private void preparePostBlog(int page) {
-        smoothProgressBar.setVisibility(View.VISIBLE);
-        APIServices apiServices = RetrofitUtility.getRetrofit().create(APIServices.class);
-        Call<List<PostBlog>> call = apiServices.getPostPlogsService(PER_PAGE, page, search, category);
-        call.enqueue(new Callback<List<PostBlog>>() {
-            @Override
-            public void onResponse(Call<List<PostBlog>> call, Response<List<PostBlog>> response) {
-                smoothProgressBar.setVisibility(View.INVISIBLE);
-                if (response.isSuccessful()) {
-                    List<PostBlog> postBlogPOJOs = response.body();
-                    addDataToView(postBlogPOJOs);
+    private void preparePostBlogServer(int page) {
+        if (Utility.hasConnection(this)) {
+            smoothProgressBar.setVisibility(View.VISIBLE);
+            APIServices apiServices = RetrofitUtility.getRetrofit().create(APIServices.class);
+            Call<List<PostBlog>> call = apiServices.getPostPlogsService(PER_PAGE, page, search, category);
+            call.enqueue(new Callback<List<PostBlog>>() {
+                @Override
+                public void onResponse(Call<List<PostBlog>> call, Response<List<PostBlog>> response) {
+                    smoothProgressBar.setVisibility(View.INVISIBLE);
+                    if (response.isSuccessful()) {
+                        List<PostBlog> postBlogPOJOs = response.body();
+                        addDataToView(postBlogPOJOs, LoadType.ONLINE);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<PostBlog>> call, Throwable t) {
-                smoothProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
+                @Override
+                public void onFailure(Call<List<PostBlog>> call, Throwable t) {
+                    errorFilterDialog.show();
+                    smoothProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            errorConnectionDialog.show();
+        }
     }
 
-    private void addDataToView(List<PostBlog> postBlogs) {
+    private void addDataToView(List<PostBlog> postBlogs, LoadType type) {
         postBlogListAll.addAll(postBlogs);
         postBlogList.clear();
         postBlogList.addAll(postBlogListAll);
@@ -321,35 +377,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onBoomButtonClick(int index) {
                         Intent intent = new Intent(MainActivity.this, TagSearchActivity.class);
-                        intent.putExtra("tagName", tags[index]);
+                        intent.putExtra("tagName", Utility.TAGS[index]);
                         startActivity(intent);
                     }
                 })
+                .normalTextColor(Color.BLACK)
                 .normalText(text);
     }
-
-    private static int[] imageResources = new int[]{
-            R.drawable.bat,
-            R.drawable.bear,
-            R.drawable.bee,
-            R.drawable.butterfly,
-            R.drawable.cat,
-            R.drawable.deer,
-            R.drawable.dolphin,
-            R.drawable.eagle,
-            R.drawable.horse
-    };
-    private static String[] tags = new String[]{
-            "گنو/لینوکس",
-            "حقوق بشر",
-            "برنامه نویسی",
-            "رادیوگیک",
-            "ویدئوکست",
-            "سرکوب دیجیتال",
-            "آموزش",
-            "معرفی",
-            "خبر"
-    };
-
-
 }
