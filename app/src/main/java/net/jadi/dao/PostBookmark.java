@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2017. Behrouz Khezry
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.jadi.dao;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -5,9 +19,6 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
-/**
- * Created by bkhezry on 12/26/2016.
- */
 @Entity(
         active = true
 )
@@ -22,6 +33,7 @@ public class PostBookmark {
     private String link;
     private String title;
     private String description;
+    private String content;
     private Integer author;
     private String authorName;
     private Integer featuredMedia;
@@ -37,10 +49,10 @@ private transient DaoSession daoSession;
 /** Used for active entity operations. */
 @Generated(hash = 1351016272)
 private transient PostBookmarkDao myDao;
-@Generated(hash = 305925812)
+@Generated(hash = 2025387003)
 public PostBookmark(Long id, Long date, String guid, Long modified,
         String status, String type, String link, String title,
-        String description, Integer author, String authorName,
+        String description, String content, Integer author, String authorName,
         Integer featuredMedia, boolean mediaDetails, String commentStatus,
         Integer parent, String categories, String tags, Long createTime) {
     this.id = id;
@@ -52,6 +64,7 @@ public PostBookmark(Long id, Long date, String guid, Long modified,
     this.link = link;
     this.title = title;
     this.description = description;
+    this.content = content;
     this.author = author;
     this.authorName = authorName;
     this.featuredMedia = featuredMedia;
@@ -118,6 +131,12 @@ public String getDescription() {
 }
 public void setDescription(String description) {
     this.description = description;
+}
+public String getContent() {
+    return this.content;
+}
+public void setContent(String content) {
+    this.content = content;
 }
 public Integer getAuthor() {
     return this.author;

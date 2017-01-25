@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2017. Behrouz Khezry
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.jadi.activity;
 
 import android.content.Context;
@@ -32,7 +46,7 @@ public class AboutActivity extends AppCompatActivity {
         try {
             versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            // do nothing
+            e.printStackTrace();
         }
         setTextWithLinks(R.id.text_application_info, getString(R.string.application_info_text, versionName));
         setTextWithLinks(R.id.text_developer_info, getString(R.string.developer_info_text));
