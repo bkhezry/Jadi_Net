@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016. Behrouz Khezry
+  ~ Copyright (c) 2017. Behrouz Khezry
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -30,9 +30,9 @@
         card_view:cardElevation="4dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/showPostLayout"
@@ -77,15 +77,12 @@
                 android:id="@+id/tagcontainerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
                 android:padding="10dp"
                 app:container_background_color="@color/material_drawer_background"
                 app:horizontal_interval="10dp"
-                app:tag_ripple_alpha="0"
-                app:tag_ripple_duration="0"
+                app:tag_corner_radius="5.0dp"
                 app:tag_text_color="#FFFFFF"
                 app:tag_theme="pure_cyan"
-                app:tag_clickable="true"
                 app:vertical_interval="10dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
