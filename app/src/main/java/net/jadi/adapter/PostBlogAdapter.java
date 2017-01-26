@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Behrouz Khezry
+ * Copyright (c) 2017. Behrouz Khezry
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import net.jadi.R;
 import net.jadi.activity.TagSearchActivity;
 import net.jadi.dao.DataBaseHandler;
 import net.jadi.pojo.PostBlog;
+import net.jadi.utility.Converter;
 import net.jadi.utility.DateConverter;
 
 import java.util.Calendar;
@@ -48,7 +50,6 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
     private List<PostBlog> postBlogs;
     private DateConverter dateConverter = new DateConverter();
     private Typeface typeface;
-    private DataModel dataModel;
 
     public PostBlogAdapter(Context mContext, List<PostBlog> postBlogPOJOs) {
         typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/IRANSansMobile.ttf");
@@ -74,29 +75,14 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
         holder.date.setText(dateConverter.getIranianDate());
         holder.title.setText(postBlog.getTitle());
         holder.description.setText(postBlog.getDescription() + "...");
-        holder.tagContainerLayout.setTags(postBlog.getTags());
-        holder.tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
-            @Override
-            public void onTagClick(int position, String text) {
-                startTagSearchActivity(text);
-            }
-
-            @Override
-            public void onTagLongClick(int position, String text) {
-
-            }
-
-            @Override
-            public void onTagCrossClick(int position) {
-
-            }
-        });
         holder.showPostLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showWebView(postBlog);
             }
         });
+        holder.tagContainerLayout.setTags(postBlog.getTags());
+
     }
 
     private void startTagSearchActivity(String text) {
@@ -108,12 +94,12 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
     private void showWebView(PostBlog postBlog) {
         DataBaseHandler dataBaseHandler = new DataBaseHandler(mContext);
         boolean isBookMark = dataBaseHandler.isPostBookmark(postBlog.getId());
-        dataModel = new DataModelBuilder()
+        DataModel dataModel = new DataModelBuilder()
                 .withId(postBlog.getId())
                 .withType("blog")
                 .withBy(postBlog.getAuthorName())
                 .withTime(postBlog.getDate())
-                .withUrl(postBlog.getGuid())
+                .withUrl(Converter.urlHTTPS(postBlog.getGuid()))
                 .withDescription(postBlog.getDescription())
                 .withBookmark(isBookMark)
                 .withViewed(false)
@@ -149,6 +135,23 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
             description = (TextView) view.findViewById(R.id.description);
             tagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerLayout);
             tagContainerLayout.setTagTypeface(typeface);
+            tagContainerLayout.setIsTagViewClickable(true);
+            tagContainerLayout.setGravity(Gravity.RIGHT);
+            tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+                @Override
+                public void onTagClick(int position, String text) {
+                    startTagSearchActivity(text);
+                }
+
+                @Override
+                public void onTagLongClick(int position, String text) {
+                }
+
+                @Override
+                public void onTagCrossClick(int position) {
+
+                }
+            });
             showPostLayout = (RelativeLayout) view.findViewById(R.id.showPostLayout);
         }
     }
