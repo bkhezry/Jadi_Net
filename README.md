@@ -1,10 +1,10 @@
-# [Jadi Weblog](http://jadi.net)
+# Jadi weblog client for android
 
 
 ##Screenshots
 <img src="assets/1.png" />
 <img src="assets/2.png" />
-<img src="assets/3.png" width="600px"/>
+<img src="assets/3.png" />
 
 ##Demo
 You can download the latest demo APK from [here](https://github.com/bkhezry/Jadi_Net/blob/master/assets/jadi_net-last.apk)
@@ -17,14 +17,13 @@ You can download the latest demo APK from [here](https://github.com/bkhezry/Jadi
 - [GreenDAO](https://github.com/greenrobot/greenDAO/)
 - [AndroidTagView](https://github.com/whilu/AndroidTagView/)
 
-#Developed By
 
-* Behrouz Khezry
- * [@bkhezry](https://twitter.com/bkhezry)
- 
+## CREDITS
+* Special Thanks to [Jadi](https://github.com/jadijadi).
+
  #License
 
-    Copyright 2016 Behrouz Khezry
+    Copyright 2017 Behrouz Khezry
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
