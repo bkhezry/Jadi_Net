@@ -1,10 +1,7 @@
-# Jadi weblog client for android
-
-
 ##Screenshots
 <img src="assets/1.png" />
 <img src="assets/2.png" />
-<img src="assets/3_1.png" />
+<img src="assets/3.png" />
 
 ##Demo
 You can download the latest demo APK from [here](https://github.com/bkhezry/Jadi_Net/blob/master/assets/jadi_net-last.apk)
