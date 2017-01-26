@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Behrouz Khezry
+ * Copyright (c) 2017. Behrouz Khezry
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,4 +29,9 @@ public interface APIServices {
                                              @Query("page") int page,
                                              @Query("search") String search,
                                              @Query("category_name") String categoryName);
+
+    @GET("tag_posts")
+    Call<List<PostBlog>> getPostByTagService(@Query("per_page") int perPage,
+                                             @Query("page") int page,
+                                             @Query("tag_name") String tagName);
 }
