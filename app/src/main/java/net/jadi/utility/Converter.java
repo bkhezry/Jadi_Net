@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Behrouz Khezry
+ * Copyright (c) 2017. Behrouz Khezry
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ public class Converter {
         return tagList;
     }
 
-    public  PostBookmark getPostBookmark(PostBlog postBlog) {
+    public PostBookmark getPostBookmark(PostBlog postBlog) {
         PostBookmark postBookmark = new PostBookmark();
         postBookmark.setId((postBlog.getId()));
         postBookmark.setDate(postBlog.getDate());
@@ -77,7 +77,7 @@ public class Converter {
         return postBookmark;
     }
 
-    public  PostBlog getPostBlog(PostBookmark postBookmark) {
+    public PostBlog getPostBlog(PostBookmark postBookmark) {
         PostBlog postBlog = new PostBlog();
         postBlog.setId((postBookmark.getId()));
         postBlog.setDate(postBookmark.getDate());
@@ -105,5 +105,9 @@ public class Converter {
             postBlogs.add(getPostBlog(postBookmark));
         }
         return postBlogs;
+    }
+
+    public static String urlHTTPS(String url) {
+        return url.replace("http://", "https://");
     }
 }
