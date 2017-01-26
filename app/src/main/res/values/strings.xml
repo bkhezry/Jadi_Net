@@ -10,13 +10,12 @@
         <![CDATA[
             <p>نسخه: %1$s</p>
             <p>کلاینت اندرویدی برای وبسایت <a href="http://jadi.net">jadi.net<a/></p>
-            <p>سورس این برنامه به صورت آزاد در گیت‌هاب قابل دسترس است <a href="https://github.com/bkhezry/Jadi_Net">github.com/bkhezry/Jadi_Net</a></p>
+            <p>سورس این برنامه در گیت‌هاب قابل دسترس است <a href="https://github.com/bkhezry/Jadi_Net">github.com/bkhezry/Jadi_Net</a></p>
             <p>اجازه‌نامه <a href="http://fontiran.com">فونت ایران</a> <b>ACQTY</b></p>
         ]]>
     </string>
      <string name="developer_info_text" translatable="false">
         <![CDATA[
-            <p>بهروز خضری</p>
             <p><a href="https://twitter.com/bkhezry">@bkhezry</a></p>
         ]]>
     </string>
@@ -36,17 +35,25 @@
     </string>
     <string name="libraries_text" translatable="false">
         <![CDATA[
-            <p><a href="https://github.com/bkhezry/ExtraWebView">Extra WebView</a> - Apache License v2.0</p>
+            <p><a href="https://github.com/bkhezry/ExtraWebView">ExtraWebView</a> - Apache License v2.0</p>
+            <p><a href="https://github.com/mikepenz/MaterialDrawer">MaterialDrawer</a> - Apache License v2.0</p>
             <p><a href="https://github.com/square/retrofit">Square Retrofit</a> - Apache License v2.0</p>
-            <p><a href="https://github.com/square/dagger">Square Dagger</a> - Apache License v2.0</p>
             <p><a href="https://github.com/chrisjenx/Calligraphy">Calligraphy</a> - Apache License v2.0</p>
             <p><a href="https://github.com/greenrobot/greenDAO">GreenDAO</a> - Apache License v2.0</p>
             <p><a href="https://github.com/afollestad/material-dialogs">Material Dialogs</a> - The MIT License (MIT)</p>
-            <p><a href="https://github.com/zplesac/android_connectionbuddy">Android ConnectionBuddy</a> - Apache License v2.0</p>
             <p><a href="https://github.com/whilu/AndroidTagView">AndroidTagView</a> - Apache License v2.0</p>
+            <p><a href="https://github.com/Nightonke/BoomMenu">BoomMenu</a> - Apache License v2.0</p>
+            <p><a href="https://github.com/ViksaaSkool/AwesomeSplash">AwesomeSplash</a> - The MIT License (MIT)</p>
+            <p><a href="https://github.com/castorflex/SmoothProgressBar">SmoothProgressBar</a> - Apache License v2.0</p>
             <p><a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a> - Apache License v2.0</p>
             <p><a href="https://github.com/google/material-design-icons">Material design icons</a> - Creative Common Attribution 4.0 International License</p>
         ]]>
     </string>
     <string name="about">درباره</string>
+    <string name="splash_text">کیبرد آزاد - جادی</string>
+    <string name="error_connect_label">به نظر می‌رسه به اینترنت متصل نیستی</string>
+    <string name="retry_label">بررسی دوباره</string>
+    <string name="ok_label">باشه</string>
+    <string name="error_filter_label">امان از دست سانسورچی‌ها</string>
+    <string name="shit_label">فغاااان</string>
 </resources>
