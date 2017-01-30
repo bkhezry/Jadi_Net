@@ -16,8 +16,8 @@
         android:title=""
         app:showAsAction="always" />
     <item
-        android:id="@+id/show_drawer"
-        android:icon="@mipmap/ic_menu_black_48dp"
+        android:id="@+id/item_github"
+        android:icon="@mipmap/ic_github"
         android:orderInCategory="100"
         android:title=""
         app:showAsAction="always" />
