@@ -57,7 +57,7 @@
                     android:layout_below="@id/title"
                     android:paddingBottom="@dimen/date_padding_bottom"
                     android:paddingEnd="@dimen/date_padding"
-                    android:textColor="@color/md_blue_900"
+                    android:textColor="@color/md_material_blue_600"
                     android:textDirection="rtl"
                     android:textSize="@dimen/date" />
 
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                app:container_background_color="@color/material_drawer_background"
+                app:container_background_color="@color/grey100"
                 app:horizontal_interval="10dp"
                 app:tag_corner_radius="5.0dp"
                 app:tag_text_color="#FFFFFF"
