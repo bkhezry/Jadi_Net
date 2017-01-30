@@ -30,7 +30,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,22 +40,14 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.bkhezry.extrawebview.data.IntentServiceResult;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+import com.ss.bottomnavigation.BottomNavigation;
+import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
 
 import net.jadi.R;
 import net.jadi.adapter.PostBlogAdapter;
@@ -84,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int PER_PAGE = 10;
     private String search = "";
     private String category = "";
-    private AccountHeader headerResult = null;
-    private Drawer result = null;
+
     private int pageGlobal;
     private List<PostBlog> postBlogList;
     private List<PostBlog> postBlogListAll;
@@ -101,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem searchItem;
     private MaterialDialog errorConnectionDialog;
     private MaterialDialog errorFilterDialog;
+    private BottomNavigation bottomNavigation;
+    Call<List<PostBlog>> call;
 
     public enum LoadType {
         ONLINE, DATABASE
@@ -123,56 +115,26 @@ public class MainActivity extends AppCompatActivity {
 
         boomMenuGenerator();
 
-        IProfile profile = new ProfileDrawerItem()
-                .withName("کیبرد آزاد")
-                .withIcon(FontAwesome.Icon.faw_github)
-                .withEmail("در دفاع از آزادی کیبرد");
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withCompactStyle(true)
-                .withSelectionListEnabledForSingleProfile(false)
-                .addProfiles(
-                        profile)
-                .withSavedInstance(savedInstanceState)
-                .withTextColor(Color.BLACK)
-                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
-                    @Override
-                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
-                        Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
-                        return false;
-                    }
-                })
-                .build();
-        result = new DrawerBuilder()
-                .withActivity(this)
-                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("پست‌ها").withIcon(FontAwesome.Icon.faw_th_list).withIdentifier(1),
-                        new PrimaryDrawerItem().withName("نشان شده‌ها").withIcon(FontAwesome.Icon.faw_bookmark).withIdentifier(1)
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null && drawerItem.getIdentifier() == 1) {
-                        }
-
-                        if (drawerItem instanceof Nameable) {
-                            toolbar.setTitle(((Nameable) drawerItem).getName().getText(MainActivity.this));
-                        }
-                        display(position);
-                        return false;
-                    }
-                })
-                .withSavedInstance(savedInstanceState)
-                .withDrawerGravity(Gravity.END)
-                .build();
         smoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progressbar);
+        bottomNavigation = (BottomNavigation) findViewById(R.id.bottom_navigation);
+        bottomNavigation.setTypeface(typeface);
+        bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
+            @Override
+            public void onSelectedItemChanged(int itemId) {
+                switch (itemId) {
+                    case R.id.tab_posts:
+                        display(1);
+                        break;
+                    case R.id.tab_bookmark:
+                        display(2);
+                        break;
+                    case R.id.tab_feedback:
+                        display(3);
+                        break;
+
+                }
+            }
+        });
         initRecycleView();
     }
 
@@ -221,16 +183,18 @@ public class MainActivity extends AppCompatActivity {
         switch (position) {
             case 1:
                 loadType = LoadType.ONLINE;
-                searchItem.setVisible(true);
+                if (searchItem != null)
+                    searchItem.setVisible(true);
                 initRecycleView();
                 break;
             case 2:
+                smoothProgressBar.setVisibility(View.INVISIBLE);
                 loadType = LoadType.DATABASE;
                 searchItem.setVisible(false);
                 initRecycleView();
                 break;
             default:
-                Toast.makeText(this, "هنوز تکمیل نشدن ولی میشن به زودی", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.todo_label, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -288,14 +252,15 @@ public class MainActivity extends AppCompatActivity {
         if (Utility.hasConnection(this)) {
             smoothProgressBar.setVisibility(View.VISIBLE);
             APIServices apiServices = RetrofitUtility.getRetrofit().create(APIServices.class);
-            Call<List<PostBlog>> call = apiServices.getPostPlogsService(PER_PAGE, page, search, category);
+            call = apiServices.getPostPlogsService(PER_PAGE, page, search, category);
             call.enqueue(new Callback<List<PostBlog>>() {
                 @Override
                 public void onResponse(Call<List<PostBlog>> call, Response<List<PostBlog>> response) {
                     smoothProgressBar.setVisibility(View.INVISIBLE);
                     if (response.isSuccessful()) {
                         List<PostBlog> postBlogPOJOs = response.body();
-                        addDataToView(postBlogPOJOs, LoadType.ONLINE);
+                        if (loadType == LoadType.ONLINE)
+                            addDataToView(postBlogPOJOs, LoadType.ONLINE);
                     }
                 }
 
@@ -353,8 +318,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.show_drawer) {
-            result.openDrawer();
+        if (id == R.id.item_github) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
             return true;
         } else if (id == R.id.refresh) {
             search = "";
