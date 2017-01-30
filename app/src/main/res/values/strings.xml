@@ -36,7 +36,7 @@
     <string name="libraries_text" translatable="false">
         <![CDATA[
             <p><a href="https://github.com/bkhezry/ExtraWebView">ExtraWebView</a> - Apache License v2.0</p>
-            <p><a href="https://github.com/mikepenz/MaterialDrawer">MaterialDrawer</a> - Apache License v2.0</p>
+            <p><a href="https://github.com/saeedsh92/bottomnavigation">BottomNavigation</a> - Apache License v2.0</p>
             <p><a href="https://github.com/square/retrofit">Square Retrofit</a> - Apache License v2.0</p>
             <p><a href="https://github.com/chrisjenx/Calligraphy">Calligraphy</a> - Apache License v2.0</p>
             <p><a href="https://github.com/greenrobot/greenDAO">GreenDAO</a> - Apache License v2.0</p>
