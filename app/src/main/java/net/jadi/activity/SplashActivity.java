@@ -39,7 +39,7 @@ public class SplashActivity extends AwesomeSplash {
     public void initSplash(ConfigSplash configSplash) {
 
         //Customize Circular Reveal
-        configSplash.setBackgroundColor(R.color.md_blue_grey_200); //any color you want form colors.xml
+        configSplash.setBackgroundColor(R.color.holo_green_dark); //any color you want form colors.xml
         configSplash.setAnimCircularRevealDuration(2000); //int ms
         configSplash.setRevealFlagX(Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
         configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
@@ -53,7 +53,7 @@ public class SplashActivity extends AwesomeSplash {
 
         //Customize Title
         configSplash.setTitleSplash(getResources().getString(R.string.splash_text));
-        configSplash.setTitleTextColor(R.color.md_black_1000);
+        configSplash.setTitleTextColor(R.color.black);
         configSplash.setTitleTextSize(30f); //float value
         configSplash.setAnimTitleDuration(250);
         configSplash.setAnimTitleTechnique(Techniques.FadeIn);
