@@ -13,6 +13,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
 
@@ -34,13 +35,51 @@
         app:spb_stroke_separator_length="4dp"
         app:spb_stroke_width="4dp" />
 
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        app:mode="phone">
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_posts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@mipmap/ic_th_list"
+            app:tab_text="پست‌ها"
+            app:tab_text_color="?attr/android:textColorPrimary" />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@mipmap/ic_bookmark"
+            app:tab_text="نشان‌شده‌ها"
+            app:tab_text_color="?attr/android:textColorPrimary" />
+
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_feedback"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@mipmap/ic_commenting"
+            app:tab_text="فیدبک"
+            app:tab_text_color="?attr/android:textColorPrimary" />
+    </com.ss.bottomnavigation.BottomNavigation>
+
     <com.nightonke.boommenu.BoomMenuButton
         android:id="@+id/bmb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:padding="20dp"
+        android:paddingBottom="60dp"
+        android:paddingEnd="20dp"
         app:bmb_buttonEnum="textInsideCircle"
         app:bmb_buttonPlaceEnum="buttonPlace_sc_9_3"
         app:bmb_piecePlaceEnum="piecePlace_dot_9_3" />
