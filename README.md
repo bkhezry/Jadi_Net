@@ -16,8 +16,8 @@ You can download the latest demo APK from [here](https://github.com/bkhezry/Jadi
 
 
 ## CREDITS
-* Special Thanks to 
-- [Jadi](https://github.com/jadijadi).
+Special Thanks to 
+- [Jadi](https://github.com/jadijadi)
 - [Ali Borhani](https://github.com/alibo)
 
  #License
