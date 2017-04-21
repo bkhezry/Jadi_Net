@@ -1,12 +1,12 @@
-##Screenshots
+## Screenshots
 <img src="assets/1.png" />
 <img src="assets/2.png" />
 <img src="assets/3.png" width="600px" />
 
-##Demo
+## Demo
 You can download the latest demo APK from [here](https://github.com/bkhezry/Jadi_Net/blob/master/assets/jadi_net-last.apk)
 
-#Dependencies
+# Dependencies
 
 - [ExtraWebView](https://github.com/bkhezry/ExtraWebView/)
 - [Retrofit2](https://github.com/square/retrofit/)
@@ -20,7 +20,7 @@ Special Thanks to
 - [Jadi](https://github.com/jadijadi)
 - [Ali Borhani](https://github.com/alibo)
 
- #License
+ # License
 
     Copyright 2017 Behrouz Khezry
 
