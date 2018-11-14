@@ -74,16 +74,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends AppCompatActivity {
     public static final int PER_PAGE = 10;
     private String search = "";
-    private String category = "";
 
     private int pageGlobal;
     private List<PostBlog> postBlogList;
     private List<PostBlog> postBlogListAll;
-    private RecyclerView recyclerView;
     private PostBlogAdapter adapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     private SmoothProgressBar smoothProgressBar;
-    private BoomMenuButton bmb;
     private Typeface typeface;
     private DataBaseHandler dataBaseHandler;
     private LongSparseArray<PostBlog> postBlogSparseArray = new LongSparseArray<>();
@@ -91,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem searchItem;
     private MaterialDialog errorConnectionDialog;
     private MaterialDialog errorFilterDialog;
-    private BottomNavigation bottomNavigation;
     Call<List<PostBlog>> call;
 
     public enum LoadType {
@@ -108,15 +104,15 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
         loadType = LoadType.ONLINE;
         dataBaseHandler = new DataBaseHandler(MainActivity.this);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         typeface = Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf");
 
         boomMenuGenerator();
 
-        smoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progressbar);
-        bottomNavigation = (BottomNavigation) findViewById(R.id.bottom_navigation);
+        smoothProgressBar = findViewById(R.id.smooth_progressbar);
+        BottomNavigation bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setTypeface(typeface);
         bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
             @Override
@@ -139,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void boomMenuGenerator() {
-        bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        BoomMenuButton bmb = findViewById(R.id.bmb);
         assert bmb != null;
         bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_9_3);
@@ -224,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         postBlogListAll = new ArrayList<>();
         postBlogList = new ArrayList<>();
         pageGlobal = 0;
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         adapter = new PostBlogAdapter(MainActivity.this, postBlogList);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -252,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         if (Utility.hasConnection(this)) {
             smoothProgressBar.setVisibility(View.VISIBLE);
             APIServices apiServices = RetrofitUtility.getRetrofit().create(APIServices.class);
+            String category = "";
             call = apiServices.getPostPlogsService(PER_PAGE, page, search, category);
             call.enqueue(new Callback<List<PostBlog>>() {
                 @Override

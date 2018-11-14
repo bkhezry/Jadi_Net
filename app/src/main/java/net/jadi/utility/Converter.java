@@ -27,20 +27,17 @@ import java.util.List;
 
 
 public class Converter {
-    public static int dpToPx(int dp, Resources resources) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics()));
-    }
 
     public static String toString(List<String> tagList) {
-        String tags = "";
+        StringBuilder tags = new StringBuilder();
         for (String s : tagList) {
-            if (tags.equals("")) {
-                tags = s;
+            if (tags.toString().equals("")) {
+                tags = new StringBuilder(s);
             } else {
-                tags += "," + s;
+                tags.append(",").append(s);
             }
         }
-        return tags;
+        return tags.toString();
 
     }
 

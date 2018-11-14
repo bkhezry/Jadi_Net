@@ -63,7 +63,6 @@ public class TagSearchActivity extends AppCompatActivity {
     private int pageGlobal;
     private List<PostBlog> postBlogList;
     private List<PostBlog> postBlogListAll;
-    private RecyclerView recyclerView;
     private PostBlogAdapter adapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     private SmoothProgressBar smoothProgressBar;
@@ -82,14 +81,14 @@ public class TagSearchActivity extends AppCompatActivity {
         dialogGenerator();
         EventBus.getDefault().register(this);
         dataBaseHandler = new DataBaseHandler(TagSearchActivity.this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP);
         Intent intent = getIntent();
         tagName = intent.getStringExtra("tagName");
         toolbar.setTitle(tagName);
-        smoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progressbar);
+        smoothProgressBar = findViewById(R.id.smooth_progressbar);
         initRecycleView();
     }
 
@@ -127,7 +126,7 @@ public class TagSearchActivity extends AppCompatActivity {
         postBlogListAll = new ArrayList<>();
         postBlogList = new ArrayList<>();
         pageGlobal = 0;
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         adapter = new PostBlogAdapter(TagSearchActivity.this, postBlogList);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TagSearchActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);

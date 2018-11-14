@@ -74,7 +74,7 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
         holder.date.setText(dateConverter.getIranianDate());
         holder.title.setText(postBlog.getTitle());
-        holder.description.setText(postBlog.getDescription() + "...");
+        holder.description.setText(String.format("%s...", postBlog.getDescription()));
         holder.showPostLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,11 +129,11 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
 
         MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
+            title = view.findViewById(R.id.title);
             title.setTypeface(title.getTypeface(), Typeface.BOLD);
-            date = (TextView) view.findViewById(R.id.date);
-            description = (TextView) view.findViewById(R.id.description);
-            tagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerLayout);
+            date = view.findViewById(R.id.date);
+            description = view.findViewById(R.id.description);
+            tagContainerLayout = view.findViewById(R.id.tagcontainerLayout);
             tagContainerLayout.setTagTypeface(typeface);
             tagContainerLayout.setIsTagViewClickable(true);
             tagContainerLayout.setGravity(Gravity.RIGHT);
@@ -152,7 +152,7 @@ public class PostBlogAdapter extends RecyclerView.Adapter<PostBlogAdapter.MyView
 
                 }
             });
-            showPostLayout = (RelativeLayout) view.findViewById(R.id.showPostLayout);
+            showPostLayout = view.findViewById(R.id.showPostLayout);
         }
     }
 }
