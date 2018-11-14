@@ -1,3 +1,4 @@
+## به دلیل عوض شدن سورس سمت سرور، اپ دیگه کار نمی‌کنه. از کد اون استفاده کنید
 ## Screenshots
 <img src="assets/1.png" />
 <img src="assets/2.png" />
